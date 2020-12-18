@@ -1,0 +1,24 @@
+
+#####################
+#Without pre-training
+# train
+./fastText/fasttext supervised -input ./data_TACL/train_data/zeerak_sexism_train.txt -output ./models/model_simple_zeerak_sexism -epoch 25 -wordNgrams 2 -dim 300 -loss hs -thread 7 -minCount 1 -lr 1.0 -verbose 2
+
+
+# test
+./fastText/fasttext test ./models/model_simple_zeerak_sexism.bin ./data_TACL/test_data/zeerak_sexism_test.txt
+
+
+
+#################
+#With pre-training
+# train
+./fastText/fasttext supervised -input ./data_TACL/train_data/zeerak_sexism_train.txt -output ./models/model_pretrained_zeerak_sexism -epoch 25 \
+       -wordNgrams 2 -dim 300 -loss hs -thread 7 -minCount 1 \
+       -lr 1.0 -verbose 2 -pretrainedVectors ./fastText/cc.en.300.vec
+
+# test
+./fastText/fasttext test ./models/model_pretrained_zeerak_sexism.bin ./data_TACL/test_data/zeerak_sexism_test.txt
+
+# test probabilities
+./fastText/fasttext predict-prob ./models/model_pretrained_zeerak_sexism.bin ./data_TACL/test_data/zeerak_sexism_test.txt 1 > pretrained_zeerak_sexism_prediction.txt
